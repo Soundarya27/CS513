@@ -29,8 +29,8 @@ def setup_parser():
 
 def calMeanImg(dirctory, imageNum):
     images = []
-    for i in range(imageNum):
-        img = listdir(dirctory)[i]
+    for n in range(imageNum):
+        img = listdir(dirctory)[n]
         imgDir = join(dirctory, img)
         if isfile(imgDir):
             images.append(imgDir)
@@ -42,8 +42,8 @@ def calMeanImg(dirctory, imageNum):
 
     print("Calculating the mean gradient image of %s images..."% imageNum)
 
-    for i in images :
-        currentImg = cv2.imread(i, 0)
+    for n in images :
+        currentImg = cv2.imread(n, 0)
         # currentImg = gradient(currentImg)
         meanImg = meanImg + (currentImg / imageNum)
         del currentImg
