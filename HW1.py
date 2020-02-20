@@ -5,10 +5,11 @@ import sys
 from os import listdir
 from os.path import isfile, join
 
+
 def setup_parser():
     help_text = {
-      'dir_name': 'specify the directory where sample images are stored',
-      'image_count': 'specify the number of images'
+      'dir_name': 'Please specify the directory where sample images are stored',
+      'image_count': 'Please specify the number of images'
     }
 
     parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -18,7 +19,7 @@ def setup_parser():
 
 def dir_path(dirName):
     if os.path.isdir(dirName):
-        return dirName
+       return dirName
     else:
         raise argparse.ArgumentTypeError(f"readable_dir:{dirName} is not a valid path")
 
@@ -38,19 +39,20 @@ def calMeanImg(dirctory, imageNum):
     print("Calculating the mean gradient image of %s images..."% imageNum)
 
     for n in listImages :
-        currentImg = cv2.imread(n, 0)
+        currentImg = cv2.imread(n)
+        currentImg = gradient(currentImg)
         meanImg = meanImg + (currentImg / imageNum)
         del currentImg
-    print("mean image created.")
+    print("Mean image created.")
 
     return meanImg
 
 def showWin(image, windowName, res = (800, 800)):
     cv2.imshow(windowName, cv2.resize(image, res))
     print("Press any key to quit.")
-    cv2.waitKey(10000)
-    cv2.destroyAllWindows('image')
-    #cv2.waitKey(1)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+   
 
 def save(image, outputName):
     cv2.imwrite(outputName, image)
@@ -77,18 +79,17 @@ def gradient(image):
 
 def createMask(image):
     kernel = np.ones((5, 5),np.uint8)
-    dilated = cv2.dilate( image, kernel, iterations = 2)
-    mask = cv2.erode(dilated,kernel,iterations = 2)
+    dilated = cv2.dilate( image, kernel, iterations = 4)
+    mask = cv2.erode(dilated,kernel,iterations = 4)
 
-    _, mask = cv2.threshold( mask, 100, 255,cv2.THRESH_BINARY)
+    _, mask = cv2.threshold( mask, 10, 255,cv2.THRESH_BINARY)
     print( "Mask Image created.")
     return mask
 
 def main(setup_parser):
     meanImg = calMeanImg(setup_parser.dir_name, setup_parser.image_count)
     save(meanImg, "meanImg.jpg")
-    meanImg = smooth(meanImg)
-
+    #meanImg = smooth(meanImg)
     mask = createMask(meanImg)
     showWin(mask, "mask")
     save(mask, "mask.jpg")
