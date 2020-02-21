@@ -48,10 +48,16 @@ def calMeanImg(dirctory, imageNum):
     return meanImg
 
 def showWin(image, windowName, res = (800, 800)):
-    cv2.imshow(windowName, cv2.resize(image, res))
-    print("Press any key to quit.")
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    if sys.platform == "darwin":
+        cv2.imshow(windowName, cv2.resize(image, res))
+        print("Press any key to quit.")
+        cv2.waitKey(2000)
+        cv2.destroyAllWindows()
+    else:
+        cv2.imshow(windowName, cv2.resize(image, res))
+        print("Press any key to quit.")
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
    
 
 def save(image, outputName):
@@ -89,7 +95,6 @@ def createMask(image):
 def main(setup_parser):
     meanImg = calMeanImg(setup_parser.dir_name, setup_parser.image_count)
     save(meanImg, "meanImg.jpg")
-    #meanImg = smooth(meanImg)
     mask = createMask(meanImg)
     showWin(mask, "mask")
     save(mask, "mask.jpg")
