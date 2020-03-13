@@ -21,11 +21,11 @@ def readMatchedData(fileName):
         for r in probes:            
             aprobe = MatchedProbe(r)
             matchedProbeList.append(aprobe)
-    print("completed.")
+    print("Completed.")
     return matchedProbeList
 
 def readLinkfile(fileName):
-    print("reading link data file")
+    print("Reading link data file")
     listOfLink =[]
     with open(fileName, newline='') as csvfile:
         links = csv.reader(csvfile)
@@ -45,11 +45,11 @@ def readLinkfile(fileName):
                     slopeInfo.append((float(s[0]),float(s[1])))
             alink = SlopeLink(r, shape, alt, slopeInfo)
             listOfLink.append(alink)
-    print("completed.")
+    print("Completed.")
     return listOfLink
 
 def evaluateSlope(matchedProbeList, listOfLink):
-    print("evaluating slope")
+    print("Evaluating slope")
     slopeResults = []
     for point in matchedProbeList:
         link = next((link for link in listOfLink if link.id == point.linkID))
@@ -63,7 +63,7 @@ def evaluateSlope(matchedProbeList, listOfLink):
             evaSlope = calSlope(point.distFromRef, link.alt, point.alt)
             slopeResults.append((point.linkID, point.lat, point.lon, evaSlope, slope, abs(evaSlope - slope)))
 
-    print("completed")
+    print("Completed")
     return slopeResults
 
 def calSlope(dist, alt1, alt2):
@@ -77,7 +77,7 @@ def writeOutput(fileName, slopeResult):
         for r in slopeResult:
             output = csv.writer(csvfile)
             output.writerow((r))
-    print("writing completed")
+    print("Writing completed")
 
 def main():
     matchdataFile, LinkdataFile = readfile()
