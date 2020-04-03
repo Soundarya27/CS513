@@ -1,3 +1,5 @@
+Steps to run the code in the command prompt
+
 # Example for IIT Campus
 The four parameters represents lat1, lon1, lat2, lon2, respectively.
 python3 main.py 41.839341 -87.629504 41.831092 -87.623239
